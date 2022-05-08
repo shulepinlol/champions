@@ -4,8 +4,8 @@ end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSamira", "1.0.0", "19/06/2021"
-_G.CoreEx.AutoUpdate("https://robur.site/shulepin/robur/raw/branch/master/" .. SCRIPT_NAME .. ".lua", VERSION)
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSamira", "1.0.1", "19/06/2021"
+_G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
 
