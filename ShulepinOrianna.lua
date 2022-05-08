@@ -2,8 +2,8 @@ if Player.CharName ~= "Orianna" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.2", "14/09/2021"
-_G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.4", "14/09/2021"
+_G.CoreEx.AutoUpdate("https://github.com/shulepinlol/champions/raw/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
 
