@@ -3,7 +3,7 @@ if Player.CharName ~= "Zeri" then return end
 local Zeri = {}
 local Script = {
     Name = "Shulepin" .. Player.CharName,
-    Version = "1.0.7",
+    Version = "1.0.8",
     LastUpdated = "22/01/2022",
     Changelog = {
         [1] = "[22/01/2022 - Version 1.0.0]: Initial release",
@@ -12,7 +12,7 @@ local Script = {
 
 module(Script.Name, package.seeall, log.setup)
 clean.module(Script.Name, clean.seeall, log.setup)
-CoreEx.AutoUpdate("https://github.com/shulepinlol/champions/raw/main/" .. Script.Name .. ".lua", Script.Version)
+CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. Script.Name .. ".lua", Script.Version)
 
 --[[
      █████  ██████  ██ 
