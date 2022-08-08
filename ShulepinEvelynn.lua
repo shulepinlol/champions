@@ -11,8 +11,8 @@ if Player.CharName ~= "Evelynn" then return end
 local Evelynn = {}
 local Script = {
     Name = "Shulepin" .. Player.CharName,
-    Version = "1.0.4",
-    LastUpdated = "21/12/2021",
+    Version = "1.0.5",
+    LastUpdated = "08/08/2022",
     Changelog = {
         [1] = "[21/12/2021 - Version 1.0.0]: Initial release",
     }
@@ -142,8 +142,8 @@ local InfoPanel = {
 function InfoPanel.CreateMenu()
     Menu.NewTree("ShulepinScript.InfoPanel", "Information Panel", function()
         Menu.Checkbox("ShulepinScript.InfoPanel.SpellFarmStatus", "Spell Farm Status", true)
-        Menu.Text("X - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.X", "", 100, 0, Resolution.x, 1)
-        Menu.Text("Y - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.Y", "", 100, 0, Resolution.y, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.X", "X -", 100, 0, Resolution.x, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.Y", "Y -", 100, 0, Resolution.y, 1)
     end)
     InfoPanel.MenuCreated = true
 end
@@ -273,12 +273,13 @@ function Evelynn.CreateSpells()
 
     Evelynn.Spells["E"] = Spell.Targeted({
         Slot            = SpellSlots.E,
-        Range           = 400
+        Range           = 300,
+        Delay           = 0.25
     })
 
     Evelynn.Spells["R"] = Spell.Skillshot({
         Slot            = SpellSlots.R,
-        Range           = 430,
+        Range           = 500,
         ConeAngleRad    = 90 * pi / 180,
         Delay           = 0.35,
         Speed           = huge,
@@ -296,17 +297,16 @@ end
 
 function Evelynn.CreateMenu()
     Menu.RegisterMenu("SEvelynn", "Shulepin | Evelynn", function()
-        Menu.Text("Spell Settings", true)
-        Menu.Separator()
+        Menu.Separator("Spell Settings")
 
         Menu.NewTree("SEvelynn.Q", "[Q] Hate Spike", function()
             Menu.NewTree("SEvelynn.Q.Combo", "Combo Settings", function()
                 Menu.Checkbox("SEvelynn.Q.Combo.Use", "Use [Q] Hate Spike", true)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SEvelynn.Q.Combo.HitChance", "", 4, HitChanceList)
+                Menu.Dropdown("SEvelynn.Q.Combo.HitChance", "Min. HitChance", 2, HitChanceList)
             end)
             Menu.NewTree("SEvelynn.Q.Waveclear", "Wave Clear Settings", function()
                 Menu.Checkbox("SEvelynn.Q.Waveclear.Use", "Use [Q] Hate Spike", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SEvelynn.Q.Waveclear.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SEvelynn.Q.Waveclear.Mana", "Min. Mana [%]", 35, 0, 100, 1)
             end)
             Menu.NewTree("SEvelynn.Q.Killsteal", "Killsteal Settings", function()
                 Menu.Checkbox("SEvelynn.Q.Killsteal.Use", "Use [Q] Hate Spike", true)
@@ -315,7 +315,7 @@ function Evelynn.CreateMenu()
             Menu.NewTree("SEvelynn.Q.Draw", "Draw Settings", function()
                 Menu.Checkbox("SEvelynn.Q.Draw.Damage", "Draw [Q] Hate Spike Damage", true)
                 Menu.Checkbox("SEvelynn.Q.Draw.Use", "Draw [Q] Hate Spike Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SEvelynn.Q.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SEvelynn.Q.Draw.Color", "Color", 0xf231f2)
             end)
         end)
 
@@ -325,7 +325,7 @@ function Evelynn.CreateMenu()
             end)
             Menu.NewTree("SEvelynn.E.Waveclear", "Wave Clear Settings", function()
                 Menu.Checkbox("SEvelynn.E.Waveclear.Use", "Use [E] Whiplash", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SEvelynn.E.Waveclear.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SEvelynn.E.Waveclear.Mana", "Min. Mana [%]", 35, 0, 100, 1)
             end)
             Menu.NewTree("SEvelynn.E.Killsteal", "Killsteal Settings", function()
                 Menu.Checkbox("SEvelynn.E.Killsteal.Use", "Use [E] Whiplash", true)
@@ -334,7 +334,7 @@ function Evelynn.CreateMenu()
             Menu.NewTree("SEvelynn.E.Draw", "Draw Settings", function()
                 Menu.Checkbox("SEvelynn.E.Draw.Damage", "Draw [E] Whiplash Damage", true)
                 Menu.Checkbox("SEvelynn.E.Draw.Use", "Draw [E] Whiplash Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SEvelynn.E.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SEvelynn.E.Draw.Color", "Color", 0x871b87)
             end)
         end)
 
@@ -346,34 +346,13 @@ function Evelynn.CreateMenu()
             Menu.NewTree("SEvelynn.R.Draw", "Draw Settings", function()
                 Menu.Checkbox("SEvelynn.R.Draw.Damage", "Draw [R] Last Caress Damage", true)
                 Menu.Checkbox("SEvelynn.R.Draw.Use", "Draw [R] Last Caress Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SEvelynn.R.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SEvelynn.R.Draw.Color", "Color", 0x871b87)
             end)
         end)
 
-        Menu.Separator()
-        Menu.Text("Other Settings", true)
-        Menu.Separator()
-
+        Menu.Separator("Other Settings")
         InfoPanel.CreateMenu()
-
-        Menu.Separator()
-        Menu.Text("Script Changelog", true)
-        Menu.Separator()
-
-        for k, v in ipairs(Script.Changelog) do
-            Menu.ColoredText(v, 0x919191FF)
-        end
-
-        Menu.Separator()
-        Menu.Text("Script Information", true)
-        Menu.Separator()
-        Menu.Text("Version:") Menu.SameLine()
-        Menu.ColoredText(Script.Version, 0x919191FF, false)
-        Menu.Text("Last Updated:") Menu.SameLine()
-        Menu.ColoredText(Script.LastUpdated, 0x919191FF, false)
-        Menu.Text("Author:") Menu.SameLine()
-        Menu.ColoredText("Shulepin", 0x9400d3FF, false)
-        Menu.Separator()
+        Menu.Separator("Author: Shulepin")
     end)
 end
 
