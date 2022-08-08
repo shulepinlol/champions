@@ -2,7 +2,7 @@ if Player.CharName ~= "Syndra" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSyndra", "1.0.6", "19/06/2021"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSyndra", "1.0.7", "08/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module("ShulepinSyndra", package.seeall, log.setup)
 clean.module("ShulepinSyndra", clean.seeall, log.setup)
@@ -56,7 +56,7 @@ local Q = Spell.Skillshot({
     ["Speed"] = 1450,
     ["Range"] = 800,
     ["Delay"] = 0.65,
-    ["Radius"] = 210,
+    ["Radius"] = 180,
     ["Type"] = "Circular",
 })
 
@@ -66,7 +66,7 @@ local W = Spell.Skillshot({
     ["Speed"] = math_huge,
     ["Range"] = 950,
     ["Delay"] = 0.75,
-    ["Radius"] = 220,
+    ["Radius"] = 225,
     ["Type"] = "Circular",
 
     ["GrabbedObjects"] = nil,
@@ -142,7 +142,7 @@ local R = Spell.Targeted({
     ["Slot"] = _R,
     ["SlotString"] = "R",
     ["Speed"] = 2000,
-    ["Range"] = 675,
+    ["Range"] = 750,
     ["Delay"] = 0,
 })
 
@@ -173,8 +173,25 @@ end
 ----------------------------------------------------------------------------------------------
 
 Menu.RegisterMenu("SSyndra", "Shulepin Syndra", function()
-    Menu.ColumnLayout("c1", "c1", 2, true, function()
-        Menu.ColoredText("Combo Options", 0xFFD700FF, true)
+    Menu.ColumnLayout("c4", "c4", 1, true, function()
+    Menu.NewTree("Drawings", "Drawings", function()
+        Menu.Checkbox("DrawQ", "Draw Q", true)
+        Menu.ColorPicker("DrawColorQ", "Q Color", ARGB(255, 255, 150, 255))
+        Menu.Checkbox("DrawW", "Draw W", false)
+        Menu.ColorPicker("DrawColorW", "W Color", ARGB(255, 255, 0, 255))
+        Menu.Checkbox("DrawE", "Draw E", true)
+        Menu.ColorPicker("DrawColorE", "E Color", ARGB(255, 255, 0, 255))
+        Menu.Checkbox("DrawR", "Draw R", false)
+        Menu.ColorPicker("DrawColorR", "R Color", ARGB(255, 255, 0, 255))
+        Menu.Checkbox("DrawOrbs", "Draw Orbs", true)
+        Menu.ColorPicker("DrawColorOrbs", "Orbs Color", ARGB(255, 255, 150, 255))
+        Menu.Checkbox("DrawDamage", "Draw Ultimate Damage", true)
+        Menu.ColorPicker("DrawColorDamage", "Damage Color", ARGB(255, 250, 170, 30))
+    end)
+    end)
+
+        Menu.NewTree("Combo Options", "Combo Options", function()
+        Menu.Separator("Combo Options", true)
         Menu.Checkbox("ComboUseQ", "Use Q", true)
         Menu.Checkbox("ComboUseW", "Use W", true)
         Menu.Checkbox("ComboUseE", "Use E", true)
@@ -193,87 +210,66 @@ Menu.RegisterMenu("SSyndra", "Shulepin Syndra", function()
         Menu.NewTree("Conditions", "R Cast Conditions", function()
             Menu.Checkbox("ConditionsQ", "Don't Cast If Can Kill With Q", true)
         end)
+        end)
 
-        Menu.NextColumn()
-
-        Menu.ColoredText("Harass Options", 0xFFD700FF, true)
+        Menu.NewTree("Harass Options", "Harass Options", function()
+        Menu.Separator("Harass Options", true)
         Menu.Checkbox("HarassUseQ", "Use Q", true)
         Menu.Checkbox("HarassUseW", "Use W", true)
         Menu.Checkbox("HarassUseE", "Use E", true)
         Menu.Checkbox("HarassUseQE", "Use Q + E Long", true)
         Menu.Checkbox("HarassUseWE", "Use W + E Long", true)
-        Menu.Slider("HarassMana", "Mana", 50, 0, 100, 1)
+        Menu.Slider("HarassMana", "Mana", 30, 0, 100, 1)
     end)
 
-    Menu.Separator()
-
     Menu.ColumnLayout("c2", "c2", 3, true, function()
-        Menu.ColoredText("LastHit Options", 0xFFD700FF, true)
+        Menu.NewTree("Last Hit Options", "Last Hit Options", function()
+        Menu.Separator("Last Hit Options", true)
         Menu.Checkbox("LastHitUseQ", "Use Q", true)
         Menu.Slider("LastHitMinionCountQ", "Hits", 2, 0, 6, 1)
-        Menu.Slider("LastHitMana", "Mana", 50, 0, 100, 1)
+        Menu.Slider("LastHitMana", "Mana", 30, 0, 100, 1)
+    end)
 
         Menu.NextColumn()
 
-        Menu.ColoredText("WaveClear Options", 0xFFD700FF, true)
+    Menu.NewTree("Wave Clear Options", "Wave Clear Options", function()
+        Menu.Separator("Wave Clear Options", true)
         Menu.Checkbox("WaveClearUseQ", "Use Q", true)
-        Menu.Slider("WaveClearMinionCountQ", "Q Hits", 3, 0, 6, 1)
+        Menu.Slider("WaveClearMinionCountQ", "Q Hits", 2, 0, 6, 1)
         Menu.Checkbox("WaveClearUseW", "Use W", true)
         Menu.Slider("WaveClearMinionCountW", "W Hits", 3, 0, 6, 1)
-        Menu.Slider("WaveClearMana", "Mana", 50, 0, 100, 1)
+        Menu.Slider("WaveClearMana", "Mana", 30, 0, 100, 1)
+    end)
 
         Menu.NextColumn()
 
-        Menu.ColoredText("JungleClear Options", 0xFFD700FF, true)
+    Menu.NewTree("Jungle Clear Options", "Jungle Clear Options", function()
+        Menu.Separator("Jungle Clear Options", true)
         Menu.Checkbox("JungleClearUseQ", "Use Q", true)
         Menu.Checkbox("JungleClearUseW", "Use W", true)
         Menu.Checkbox("JungleClearUseE", "Use E", true)
-        Menu.Slider("JungleClearMana", "Mana", 50, 0, 100, 1)
+        Menu.Slider("JungleClearMana", "Mana", 30, 0, 100, 1)
+    end)
     end)
 
-    Menu.Separator()
-
     Menu.ColumnLayout("c3", "c3", 2, true, function()
-        Menu.ColoredText("Prediction Options", 0xFFD700FF, true)
-        Menu.Slider("HitChanceQ", "Q HitChance", 0.25, 0, 1, 0.01)
-        Menu.Slider("HitChanceW", "W HitChance", 0.25, 0, 1, 0.01)
-        Menu.Slider("HitChanceQE", "QE HitChance", 0.25, 0, 1, 0.01)
+    Menu.NewTree("Prediction Options", "Prediction Options", function()
+        Menu.Separator("Prediction Options", true)
+        Menu.Slider("HitChanceQ", "Q HitChance", 0.15, 0, 1, 0.01)
+        Menu.Slider("HitChanceW", "W HitChance", 0.15, 0, 1, 0.01)
+        Menu.Slider("HitChanceQE", "QE HitChance", 0.15, 0, 1, 0.01)
+    end)
 
         Menu.NextColumn()
 
-        Menu.ColoredText("Miscellaneous", 0xFFD700FF, true)
+    Menu.NewTree("Miscellaneous", "Miscellaneous", function()
+        Menu.Separator("Miscellaneous", true)
         Menu.Checkbox("MiscAntiGap", "Use QE Gapclose", false)
         Menu.Checkbox("MiscInterrupt", "Use QE Interrupt", false)
     end)
-
-    Menu.Separator()
-
-    Menu.ColumnLayout("c4", "c4", 1, true, function()
-        Menu.ColoredText("Drawings", 0xFFD700FF, true)
-        Menu.Checkbox("DrawQ", "Draw Q", true)
-        Menu.ColorPicker("DrawColorQ", "Q Color", ARGB(255, 255, 255, 255))
-        Menu.Checkbox("DrawW", "Draw W", true)
-        Menu.ColorPicker("DrawColorW", "W Color", ARGB(255, 255, 255, 255))
-        Menu.Checkbox("DrawE", "Draw E", true)
-        Menu.ColorPicker("DrawColorE", "E Color", ARGB(255, 255, 255, 255))
-        Menu.Checkbox("DrawR", "Draw R", true)
-        Menu.ColorPicker("DrawColorR", "R Color", ARGB(255, 255, 255, 255))
-        Menu.Checkbox("DrawOrbs", "Draw Orbs", true)
-        Menu.ColorPicker("DrawColorOrbs", "Orbs Color", ARGB(255, 250, 70, 250))
-        Menu.Checkbox("DrawDamage", "Draw Ultimate Damage", true)
-        Menu.ColorPicker("DrawColorDamage", "Damage Color", ARGB(255, 250, 170, 30))
     end)
 
-    Menu.Separator()
-
-    Menu.ColoredText("Script Information", ARGB(255, 255, 255, 255), true)
-
-    Menu.Separator()
-
-    Menu.ColoredText("Version: " .. VERSION, ARGB(255, 255, 255, 255))
-    Menu.ColoredText("Last Update: " .. LAST_UPDATE, ARGB(255, 255, 255, 255))
-
-    Menu.Separator()
+    Menu.Separator("Author: Shulepin")
 end)
 
 ----------------------------------------------------------------------------------------------
@@ -797,7 +793,7 @@ end
 local OnTick = function()
     local tick = os_clock()
     if TickCount < tick then
-        TickCount = tick + 0.1
+        TickCount = tick + 0.2
 
         ClearOrbData()
         ExecuteUltimate()
