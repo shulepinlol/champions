@@ -11,8 +11,8 @@ if Player.CharName ~= "Poppy" then return end
 local Poppy = {}
 local Script = {
     Name = "Shulepin" .. Player.CharName,
-    Version = "1.0.4",
-    LastUpdated = "21/12/2021",
+    Version = "1.0.5",
+    LastUpdated = "08/08/2022",
     Changelog = {
         [1] = "[21/12/2021 - Version 1.0.0]: Initial release",
     }
@@ -142,8 +142,8 @@ local InfoPanel = {
 function InfoPanel.CreateMenu()
     Menu.NewTree("ShulepinScript.InfoPanel", "Information Panel", function()
         Menu.Checkbox("ShulepinScript.InfoPanel.SpellFarmStatus", "Spell Farm Status", true)
-        Menu.Text("X - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.X", "", 100, 0, Resolution.x, 1)
-        Menu.Text("Y - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.Y", "", 100, 0, Resolution.y, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.X", "X -", 100, 0, Resolution.x, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.Y", "Y -", 100, 0, Resolution.y, 1)
     end)
     InfoPanel.MenuCreated = true
 end
@@ -257,7 +257,7 @@ function Poppy.CreateSpells()
     Poppy.Spells["Q"] = Spell.Skillshot({
         Slot            = SpellSlots.Q,
         Range           = 400,
-        Width           = 100,
+        Width           = 160,
         Delay           = 0.25,
         Speed           = huge,
         Type            = "Linear"
@@ -294,28 +294,27 @@ end
 
 function Poppy.CreateMenu()
     Menu.RegisterMenu("SPoppy", "Shulepin | Poppy", function()
-        Menu.Text("Spell Settings", true)
-        Menu.Separator()
+        Menu.Separator("Spell Settings")
 
         Menu.NewTree("SPoppy.Q", "[Q] Hammer Shock", function()
             Menu.NewTree("SPoppy.Q.Combo", "Combo Settings", function()
                 Menu.Checkbox("SPoppy.Q.Combo.Use", "Use [Q] Hammer Shock", true)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SPoppy.Q.Combo.HitChance", "", 4, HitChanceList)
+                Menu.Dropdown("SPoppy.Q.Combo.HitChance", "Min. HitChance", 2, HitChanceList)
             end)
             Menu.NewTree("SPoppy.Q.Harass", "Harass Settings", function()
                 Menu.Checkbox("SPoppy.Q.Harass.Use", "Use [Q] Hammer Shock", true)
-                Menu.Text("Min. Mana [%%]  - "); Menu.SameLine(); Menu.Slider("SPoppy.Q.Harass.Mana", "", 35, 0, 100, 1)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SPoppy.Q.Harass.HitChance", "", 4, HitChanceList)
+                Menu.Slider("SPoppy.Q.Harass.Mana", "Min. Mana [%]", 35, 0, 100, 1)
+                Menu.Dropdown("SPoppy.Q.Harass.HitChance", "Min. HitChance", 2, HitChanceList)
                 AddWhiteListMenu("SPoppy.Q.Harass.WhiteList.")
             end)
             Menu.NewTree("SPoppy.Q.Lasthit", "Last Hit Settings", function()
                 Menu.Checkbox("SPoppy.Q.Lasthit.Use", "Use [Q] Hammer Shock", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SPoppy.Q.Lasthit.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SPoppy.Q.Lasthit.Mana", "Min. Mana [%]", 35, 0, 100, 1)
             end)
             Menu.NewTree("SPoppy.Q.Waveclear", "Wave Clear Settings", function()
                 Menu.Checkbox("SPoppy.Q.Waveclear.Use", "Use [Q] Hammer Shock", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SPoppy.Q.Waveclear.Mana", "", 35, 0, 100, 1)
-                Menu.Text("Min. Minion Hits - "); Menu.SameLine(); Menu.Slider("SPoppy.Q.Waveclear.Minions", "", 2, 0, 6, 1)
+                Menu.Slider("SPoppy.Q.Waveclear.Mana", "Min. Mana [%]", 35, 0, 100, 1)
+                Menu.Slider("SPoppy.Q.Waveclear.Minions", "Min. Minion Hits", 2, 0, 6, 1)
             end)
             Menu.NewTree("SPoppy.Q.Killsteal", "Kill Steal Settings", function()
                 Menu.Checkbox("SPoppy.Q.Killsteal.Use", "Use [Q] Hammer Shock", true)
@@ -324,7 +323,7 @@ function Poppy.CreateMenu()
             Menu.NewTree("SPoppy.Q.Draw", "Draw Settings", function()
                 Menu.Checkbox("SPoppy.Q.Draw.Damage", "Draw [Q] Hammer Shock", true)
                 Menu.Checkbox("SPoppy.Q.Draw.Use", "Draw [Q] Hammer Shock", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SPoppy.Q.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SPoppy.Q.Draw.Color", "Color", 0xf3e8f3)
             end)
         end)
 
@@ -341,7 +340,7 @@ function Poppy.CreateMenu()
             end)
             Menu.NewTree("SPoppy.E.Waveclear", "Jungle Clear Settings", function()
                 Menu.Checkbox("SPoppy.E.Waveclear.Use", "Use [E] Heroic Charge", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SPoppy.Q.Waveclear.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SPoppy.Q.Waveclear.Mana", "Min. Mana [%]", 35, 0, 100, 1)
             end)
             Menu.NewTree("SPoppy.E.Killsteal", "Kill Steal Settings", function()
                 Menu.Checkbox("SPoppy.E.Killsteal.Use", "Use [E] Heroic Charge", true)
@@ -350,34 +349,13 @@ function Poppy.CreateMenu()
             Menu.NewTree("SPoppy.E.Draw", "Draw Settings", function()
                 Menu.Checkbox("SPoppy.E.Draw.Damage", "Draw [E] Heroic Charge", true)
                 Menu.Checkbox("SPoppy.E.Draw.Use", "Draw [E] Heroic Charge", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SPoppy.E.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SPoppy.E.Draw.Color", "Color", 0x918b91)
             end)
         end)
 
-        Menu.Separator()
-        Menu.Text("Other Settings", true)
-        Menu.Separator()
-
+        Menu.Separator("Other Settings")
         InfoPanel.CreateMenu()
-
-        Menu.Separator()
-        Menu.Text("Script Changelog", true)
-        Menu.Separator()
-
-        for k, v in ipairs(Script.Changelog) do
-            Menu.ColoredText(v, 0x919191FF)
-        end
-
-        Menu.Separator()
-        Menu.Text("Script Information", true)
-        Menu.Separator()
-        Menu.Text("Version:") Menu.SameLine()
-        Menu.ColoredText(Script.Version, 0x919191FF, false)
-        Menu.Text("Last Updated:") Menu.SameLine()
-        Menu.ColoredText(Script.LastUpdated, 0x919191FF, false)
-        Menu.Text("Author:") Menu.SameLine()
-        Menu.ColoredText("Shulepin", 0x9400d3FF, false)
-        Menu.Separator()
+        Menu.Separator("Author: Shulepin")
     end)
 end
 
@@ -451,7 +429,7 @@ function Poppy.Waveclear(n)
 
     if n == 1 and Poppy.IsReady("Q", "Waveclear") then
         if lastTarget and lastTarget.IsMonster and TargetSelector:IsValidTarget(lastTarget, Poppy.Spells.Q.Range) then
-            return Poppy.Spells.Q:CastOnHitChance(lastTarget, HitChance.Medium)
+            return Poppy.Spells.Q:CastOnHitChance(lastTarget, HitChance.Low)
         else
             local targs = Poppy.Spells.Q:GetFarmTargets()
             if targs[1] then
@@ -471,7 +449,7 @@ function Poppy.KillSteal(n)
         for k, target in ipairs(Poppy.Spells.Q:GetTargets()) do
             local whiteListValue = Menu.Get("SPoppy.Q.Killsteal.WhiteList." .. target.CharName, true)
             if whiteListValue and Poppy.Spells.Q:CanKillTarget(target) then
-                return Poppy.Spells.Q:CastOnHitChance(target, HitChance.Medium)
+                return Poppy.Spells.Q:CastOnHitChance(target, HitChance.Low)
             end
         end
     end
