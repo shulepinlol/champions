@@ -2,7 +2,7 @@ if Player.CharName ~= "Orianna" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.5", "14/09/2021"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.6", "08/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -64,28 +64,28 @@ local Q = Spell.Skillshot({
     ["Slot"] = _Q,
     ["SlotString"] = "Q",
     ["Range"] = 825,
-    ["Speed"] = 1200,
+    ["Speed"] = 1400,
     ["Delay"] = 0,
-    ["Radius"] = 170,
+    ["Radius"] = 175,
     ["Type"] = "Circular"
 })
 
 local W = Spell.Active({
     ["Slot"] = _W,
     ["SlotString"] = "W",
-    ["Range"] = 250,
+    ["Range"] = 225,
 })
 
 local E = Spell.Targeted({
     ["Slot"] = _E,
     ["SlotString"] = "E",
-    ["Range"] = 1095,
+    ["Range"] = 1120,
 })
 
 local R = Spell.Active({
     ["Slot"] = _R,
     ["SlotString"] = "R",
-    ["Range"] = 400,
+    ["Range"] = 415,
     ["Delay"] = 0.5,
 })
 
@@ -100,7 +100,7 @@ local LastCastT = {
 
 local BallObject = Player
 local DrawSpellTable = { Q, E }
-local TickCount = 0
+local TickCount = 0.2
 
 ---@type fun(a: number, r: number, g: number, b: number):number
 local ARGB = function(a, r, g, b)
@@ -140,7 +140,7 @@ end
 ---@type fun(slot: number, position: Vector|GameObject, condition: function|boolean):void
 local CastSpell = function(slot, position, condition)
     local tick = os_clock()
-    if LastCastT[slot] + 0.1 < tick then
+    if LastCastT[slot] + 0.2 < tick then
         if Input.Cast(slot, position) then
             LastCastT[slot] = tick
             if condition ~= nil then
@@ -283,11 +283,7 @@ local HitChanceList = { "Collision", "OutOfRange", "VeryLow", "Low", "Medium", "
 Menu.RegisterMenu("SOrianna", "Shulepin Orianna", function()
     Menu.Checkbox("ScriptEnabled", "Script Enabled", true)
 
-    Menu.Separator()
-
-    Menu.ColoredText("Spell Settings", ARGB(255, 255, 255, 255), true)
-
-    Menu.Separator()
+    Menu.Separator("Spell Settings", true)
 
     Menu.NewTree("Q", "[Q] Command: Attack", function()
         Menu.NewTree("ComboQ", "Combo Options", function()
@@ -314,7 +310,7 @@ Menu.RegisterMenu("SOrianna", "Shulepin Orianna", function()
         end)
         Menu.NewTree("DrawingsQ", "Drawings", function()
             Menu.Checkbox("DrawQ", "Draw Range", true)
-            Menu.ColorPicker("DrawColorQ", "Color", ARGB(255, 255, 255, 255))
+            Menu.ColorPicker("DrawColorQ", "Color", ARGB(255, 0, 200, 255))
         end)
     end)
 
@@ -341,10 +337,10 @@ Menu.RegisterMenu("SOrianna", "Shulepin Orianna", function()
             Menu.Checkbox("JungleClearUseW", "Enabled", true)
             Menu.Slider("JungleClearManaW", "Min. Mana [%]", 35, 0, 100, 1)
         end)
-        Menu.NewTree("DrawingsW", "Drawings", function()
-            Menu.Checkbox("DrawW", "Draw Range", true)
-            Menu.ColorPicker("DrawColorW", "Color", ARGB(255, 255, 255, 255))
-        end)
+        --Menu.NewTree("DrawingsW", "Drawings", function()
+            --Menu.Checkbox("DrawW", "Draw Range", false)
+            --Menu.ColorPicker("DrawColorW", "Color", ARGB(255, 0, 255, 255))
+        --end)
     end)
 
     Menu.NewTree("E", "[E] Command: Protect", function()
@@ -367,7 +363,7 @@ Menu.RegisterMenu("SOrianna", "Shulepin Orianna", function()
         end)
         Menu.NewTree("DrawingsE", "Drawings", function()
             Menu.Checkbox("DrawE", "Draw Range", true)
-            Menu.ColorPicker("DrawColorE", "Color", ARGB(255, 255, 255, 255))
+            Menu.ColorPicker("DrawColorE", "Color", ARGB(255, 0, 255, 255))
         end)
     end)
 
@@ -383,32 +379,22 @@ Menu.RegisterMenu("SOrianna", "Shulepin Orianna", function()
         Menu.NewTree("MiscR", "Miscellaneous", function()
             Menu.Checkbox("BlockR", "Block R If No Hits", false)
         end)
-        Menu.NewTree("DrawingsR", "Drawings", function()
-            Menu.Checkbox("DrawR", "Draw Range", true)
-            Menu.ColorPicker("DrawColorR", "Color", ARGB(255, 255, 255, 255))
-        end)
+        --Menu.NewTree("DrawingsR", "Drawings", function()
+            --Menu.Checkbox("DrawR", "Draw Range", false)
+            --Menu.ColorPicker("DrawColorR", "Color", ARGB(255, 0, 255, 255))
+        --end)
     end)
-
-    Menu.Separator()
-
-    Menu.ColoredText("Script Information", ARGB(255, 255, 255, 255), true)
-
-    Menu.Separator()
-
-    Menu.ColoredText("Version: " .. VERSION, ARGB(255, 255, 255, 255))
-    Menu.ColoredText("Last Update: " .. LAST_UPDATE, ARGB(255, 255, 255, 255))
-
-    Menu.Separator()
+    Menu.Separator("Author: Shulepin")
 end)
 
-Menu.RegisterPermashow("SOrianna_PermaShow", "Shulepin Orianna: Auto Harass", function()
-    Menu.Keybind("AutoHarass", "Enabled", string.byte("G"), true, false)
-    Menu.Checkbox("AutoHarassUseQ", "Use Q", true)
-    Menu.Checkbox("AutoHarassUseW", "Use W", true)
-    Menu.Slider("AutoHarassMana", "Mana", 35, 0, 100, 1)
-end, function() 
-    return true
-end)
+--Menu.RegisterPermashow("SOrianna_PermaShow", "Shulepin Orianna: Auto Harass", function()
+    --Menu.Keybind("AutoHarass", "Enabled", string.byte("G"), true, false)
+    --Menu.Checkbox("AutoHarassUseQ", "Use Q", true)
+    --Menu.Checkbox("AutoHarassUseW", "Use W", true)
+    --Menu.Slider("AutoHarassMana", "Mana", 35, 0, 100, 1)
+--end, function() 
+    --return true
+--end)
 
 ----------------------------------------------------------------------------------------------
 
@@ -447,7 +433,7 @@ local Combo = function()
                 end
             end
             local predResult = Prediction.GetPredictedPosition(qTarget, Q, BallObject.Position)
-            if predResult and predResult.HitChance >= 0.25 then
+            if predResult and predResult.HitChance >= 0.15 then
                 return Q:Cast(predResult.CastPosition)
             end
         end
@@ -507,7 +493,7 @@ local Harass = function()
         return menuValue and isEnoughMana and whiteListValue and canCast and isValid
     end) then
         local predResult = Prediction.GetPredictedPosition(qTarget, Q, BallObject.Position)
-        if predResult and predResult.HitChance >= 0.25 then
+        if predResult and predResult.HitChance >= 0.15 then
             return Q:Cast(predResult.CastPosition)
         end
     end
@@ -700,7 +686,7 @@ local AutoMode = function()
             return menuValue and canCast and isValid
         end) then
             local predResult = Prediction.GetPredictedPosition(qTarget, Q, BallObject.Position)
-            if predResult and predResult.HitChance >= 0.25 then
+            if predResult and predResult.HitChance >= 0.15 then
                 return Q:Cast(predResult.CastPosition)
             end
         end
@@ -744,7 +730,7 @@ local OnTick = function()
 
     local tick = os_clock()
     if TickCount < tick then
-        TickCount = tick + 0.1
+        TickCount = tick + 0.2
 
         if not IsValidObject(BallObject) then
             BallObject = Player
@@ -774,8 +760,8 @@ local OnDraw = function()
     if not GetMenuValue("ScriptEnabled") then return end
 
     if BallObject and BallObject.IsValid and BallObject.Position then
-        Renderer.DrawCircle3D(Vector(BallObject.Position.x, Player.Position.y, BallObject.Position.z), 75, 30, 5, ARGB(255, 255, 255, 255))
-        Renderer.DrawCircle3D(Vector(BallObject.Position.x, Player.Position.y, BallObject.Position.z), R.Range, 30, 5, ARGB(120, 255, 255, 255))
+        Renderer.DrawCircle3D(Vector(BallObject.Position.x, Player.Position.y, BallObject.Position.z), 75, 30, 3, ARGB(255, 0, 255, 255))
+        --Renderer.DrawCircle3D(Vector(BallObject.Position.x, Player.Position.y, BallObject.Position.z), R.Range, 30, 2, ARGB(255, 255, 255, 255))
     end
 
     local myHeroPos = Player.Position
