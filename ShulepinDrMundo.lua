@@ -11,8 +11,8 @@ if Player.CharName ~= "DrMundo" then return end
 local DrMundo = {}
 local Script = {
     Name = "Shulepin" .. Player.CharName,
-    Version = "1.0.5",
-    LastUpdated = "03/01/2022",
+    Version = "1.0.6",
+    LastUpdated = "08/08/2022",
     Changelog = {
         [1] = "[21/12/2021 - Version 1.0.0]: Initial release",
         [2] = "[03/01/2022 - Version 1.0.1]: Added R usage | Auto Q Harass"
@@ -144,8 +144,8 @@ local InfoPanel = {
 function InfoPanel.CreateMenu()
     Menu.NewTree("ShulepinScript.InfoPanel", "Information Panel", function()
         Menu.Checkbox("ShulepinScript.InfoPanel.SpellFarmStatus", "Spell Farm Status", true)
-        Menu.Text("X - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.X", "", 100, 0, Resolution.x, 1)
-        Menu.Text("Y - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.Y", "", 100, 0, Resolution.y, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.X", "X -", 100, 0, Resolution.x, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.Y", "Y -", 100, 0, Resolution.y, 1)
     end)
     InfoPanel.MenuCreated = true
 end
@@ -305,17 +305,16 @@ end
 
 function DrMundo.CreateMenu()
     Menu.RegisterMenu("SDrMundo", "Shulepin | DrMundo", function()
-        Menu.Text("Spell Settings", true)
-        Menu.Separator()
+        Menu.Separator("Spell Settings", true)
 
         Menu.NewTree("SDrMundo.Q", "[Q] Infected Bonesaw", function()
             Menu.NewTree("SDrMundo.Q.Combo", "Combo Settings", function()
                 Menu.Checkbox("SDrMundo.Q.Combo.Use", "Use [Q] Infected Bonesaw", true)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SDrMundo.Q.Combo.HitChance", "", 4, HitChanceList)
+                Menu.Dropdown("SDrMundo.Q.Combo.HitChance", "Min. HitChance", 2, HitChanceList)
             end)
             Menu.NewTree("SDrMundo.Q.Harass", "Harass Settings", function()
                 Menu.Checkbox("SDrMundo.Q.Harass.Use", "Use [Q] Infected Bonesaw", true)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SDrMundo.Q.Harass.HitChance", "", 4, HitChanceList)
+                Menu.Dropdown("SDrMundo.Q.Harass.HitChance", "Min. HitChance", 2, HitChanceList)
                 AddWhiteListMenu("SDrMundo.Q.Harass.WhiteList.")
             end)
             Menu.NewTree("SDrMundo.Q.Lasthit", "Last Hit Settings", function()
@@ -330,12 +329,12 @@ function DrMundo.CreateMenu()
             end)
             Menu.NewTree("SDrMundo.Q.AutoHarass", "Auto Harass Settings", function()
                 Menu.Keybind("SDrMundo.Q.AutoHarass.Use", "Use [Q] Infected Bonesaw", string.byte("T"), true, false)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SDrMundo.Q.AutoHarass.HitChance", "", 4, HitChanceList)
+                Menu.Dropdown("SDrMundo.Q.AutoHarass.HitChance", "Min. HitChance", 2, HitChanceList)
             end)
             Menu.NewTree("SDrMundo.Q.Draw", "Draw Settings", function()
                 Menu.Checkbox("SDrMundo.Q.Draw.Damage", "Draw [Q] Infected Bonesaw Damage", true)
                 Menu.Checkbox("SDrMundo.Q.Draw.Use", "Draw [Q] Infected Bonesaw Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SDrMundo.Q.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SDrMundo.Q.Draw.Color", "Color", 0xFFFFFFFF)
             end)
         end)
 
@@ -366,35 +365,16 @@ function DrMundo.CreateMenu()
         Menu.NewTree("SDrMundo.R", "[R] Maximum Dosage", function()
             Menu.Checkbox("SDrMundo.R.Use", "Use [R] Maximum Dosage", true)
             Menu.Checkbox("SDrMundo.R.Combo", "Use Only In Combo", true)
-            Menu.Text("Min. HP [%%] - "); Menu.SameLine(); Menu.Slider("SDrMundo.R.HP", "", 35, 0, 100, 1)
-            Menu.Text("Min. Range  - "); Menu.SameLine(); Menu.Slider("SDrMundo.R.Range", "", 600, 0, 1500, 1)
-            Menu.Text("Min. Heroes - "); Menu.SameLine(); Menu.Slider("SDrMundo.R.Heroes", "", 2, 0, 5, 1)
+            Menu.Slider("SDrMundo.R.HP", "Min. HP [%%]", 35, 0, 100, 1)
+            Menu.Slider("SDrMundo.R.Range", "Min. Range", 600, 0, 1500, 1)
+            Menu.Slider("SDrMundo.R.Heroes", "Min. Heroes", 2, 0, 5, 1)
         end)
 
-        Menu.Separator()
-        Menu.Text("Other Settings", true)
-        Menu.Separator()
+        Menu.Separator("Other Settings", true)
 
         InfoPanel.CreateMenu()
 
-        Menu.Separator()
-        Menu.Text("Script Changelog", true)
-        Menu.Separator()
-
-        for k, v in ipairs(Script.Changelog) do
-            Menu.ColoredText(v, 0x919191FF)
-        end
-
-        Menu.Separator()
-        Menu.Text("Script Information", true)
-        Menu.Separator()
-        Menu.Text("Version:") Menu.SameLine()
-        Menu.ColoredText(Script.Version, 0x919191FF, false)
-        Menu.Text("Last Updated:") Menu.SameLine()
-        Menu.ColoredText(Script.LastUpdated, 0x919191FF, false)
-        Menu.Text("Author:") Menu.SameLine()
-        Menu.ColoredText("Shulepin", 0x9400d3FF, false)
-        Menu.Separator()
+        Menu.Separator("Author: Shulepin")
     end)
 end
 
@@ -470,7 +450,7 @@ function DrMundo.Waveclear(n)
 
     if n == 1 and DrMundo.IsReady("Q", "Waveclear") then
         if lastTarget and lastTarget.IsMonster and TargetSelector:IsValidTarget(lastTarget, DrMundo.Spells.Q.Range) then
-            return DrMundo.Spells.Q:CastOnHitChance(lastTarget, HitChance.Medium)
+            return DrMundo.Spells.Q:CastOnHitChance(lastTarget, HitChance.Low)
         else
             local targs = DrMundo.Spells.Q:GetFarmTargets()
             if targs[1] then
@@ -496,7 +476,7 @@ function DrMundo.KillSteal(n)
         for k, target in ipairs(DrMundo.Spells.Q:GetTargets()) do
             local whiteListValue = Menu.Get("SDrMundo.Q.Killsteal.WhiteList." .. target.CharName, true)
             if whiteListValue and DrMundo.Spells.Q:CanKillTarget(target) then
-                return DrMundo.Spells.Q:CastOnHitChance(target, HitChance.Medium)
+                return DrMundo.Spells.Q:CastOnHitChance(target, HitChance.Low)
             end
         end
     end
