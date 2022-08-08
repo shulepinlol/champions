@@ -2,7 +2,7 @@ if Player.CharName ~= "Jayce" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinJayce", "1.0.4", "19/06/2021"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinJayce", "1.0.5", "08/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -192,61 +192,59 @@ end
 
 Menu.RegisterMenu("SJayce", "Shulepin Jayce", function()
     Menu.ColumnLayout("c1", "c1", 2, true, function()
-        Menu.ColoredText("Combo Options", 0xFFD700FF, true)
-        Menu.ColoredText("> Range Spells", ARGB(255, 255, 255, 255))
+    Menu.NewTree("Combo Options", "Combo Options", function()
+        Menu.Separator("Range Spells")
         Menu.Checkbox("ComboUseRangeQ", "Use Q", true)
         Menu.Checkbox("ComboUseRangeW", "Use W", true)
         Menu.Checkbox("ComboUseRangeE", "Use E", true)
-        Menu.ColoredText("> Melee Spells", ARGB(255, 255, 255, 255))
+        Menu.Separator("Melee Spells")
         Menu.Checkbox("ComboUseMeleeQ", "Use Q", true)
         Menu.Checkbox("ComboUseMeleeW", "Use W", true)
         Menu.Checkbox("ComboUseMeleeE", "Use E", true)
-        Menu.ColoredText("", ARGB(255, 255, 255, 255))
         Menu.Checkbox("ComboUseR", "Use R", true)
 
         Menu.NextColumn()
 
-        Menu.ColoredText("Harass Options", 0xFFD700FF, true)
+        Menu.Separator("Harass Options", true)
         Menu.Checkbox("HarassUseRangeQ", "Use Range Q", true)
         Menu.Checkbox("HarassUseRangeQE", "Use Range QE", true)
         Menu.Checkbox("HarassUseRangeW", "Use Range W After Attack", true)
-        Menu.Slider("HarassMana", "Mana", 50, 0, 100, 1)
+        Menu.Slider("HarassMana", "Min. Mana [%]", 30, 0, 100, 1)
+    end)
     end)
 
-    Menu.Separator()
-
     Menu.ColumnLayout("c2", "c2", 2, true, function()
-        Menu.ColoredText("WaveClear Options", 0xFFD700FF, true)
+    Menu.NewTree("Wave Clear Options", "Wave Clear Options", function()
+        Menu.Separator("WaveClear Options", 0xFFD700FF, true)
         Menu.Checkbox("WaveClearUseRangeQ", "Use Range Q", true)
         Menu.Slider("WaveClearMinionCountQ", "Q Hits", 3, 0, 6, 1)
-        Menu.Slider("WaveClearMana", "Mana", 50, 0, 100, 1)
-
+        Menu.Slider("WaveClearMana", "Min. Mana [%]", 30, 0, 100, 1)
+    end)
         Menu.NextColumn()
 
-        Menu.ColoredText("JungleClear Options", 0xFFD700FF, true)
-        Menu.ColoredText("> Range Spells", ARGB(255, 255, 255, 255))
+    Menu.NewTree("Jungle Clear Options", "Jungle Clear Options", function()
+        Menu.Separator("Range Spells")
         Menu.Checkbox("JungleClearUseRangeQ", "Use Q", true)
         Menu.Checkbox("JungleClearUseRangeW", "Use W", true)
         Menu.Checkbox("JungleClearUseRangeE", "Use E", true)
-        Menu.ColoredText("> Melee Spells", ARGB(255, 255, 255, 255))
+        Menu.Separator("Melee Spells")
         Menu.Checkbox("JungleClearUseMeleeQ", "Use Q", true)
         Menu.Checkbox("JungleClearUseMeleeW", "Use W", true)
         Menu.Checkbox("JungleClearUseMeleeE", "Use E", true)
-        Menu.ColoredText("", ARGB(255, 255, 255, 255))
         Menu.Checkbox("JungleClearUseR", "Use R", true)
-        Menu.Slider("JungleClearMana", "Mana", 50, 0, 100, 1)
+        Menu.Slider("JungleClearMana", "Min. Mana [%]", 30, 0, 100, 1)
+    end)
     end)
 
-    Menu.Separator()
-
     Menu.ColumnLayout("c3", "c3", 2, true, function()
-        Menu.ColoredText("Prediction Options", 0xFFD700FF, true)
+    Menu.NewTree("Prediction Options", "Prediction Options", function()
+        Menu.Separator("Prediction Options")
         Menu.Slider("HitChanceQ", "Q HitChance", 0.25, 0, 1, 0.01)
         Menu.Slider("HitChanceQE", "QE HitChance", 0.25, 0, 1, 0.01)
 
         Menu.NextColumn()
 
-        Menu.ColoredText("Miscellaneous", 0xFFD700FF, true)
+        Menu.Separator("Miscellaneous")
         Menu.Checkbox("MiscAntiGap", "Use E Gapclose", false)
         Menu.Checkbox("MiscInterrupt", "Use E Interrupt", false)
         Menu.Checkbox("MiscAnimCancel", "Cancel Melee Q Animation", true)
@@ -254,31 +252,23 @@ Menu.RegisterMenu("SJayce", "Shulepin Jayce", function()
         Menu.NewTree("ManualQE", "Manual Q + E", function()
             Menu.Keybind("MiscManualQE", "Manual Q + E", string.byte("T"), false)
         end)
+        end)
     end)
-
-    Menu.Separator()
 
     Menu.ColumnLayout("c4", "c4", 1, true, function()
+    Menu.NewTree("Drawings", "Drawings", function()
         Menu.Checkbox("DrawRangeQ", "Draw Range Q", true)
-        Menu.ColorPicker("DrawColorRangeQ", "Range Q Color", ARGB(255, 255, 255, 255))
+        Menu.ColorPicker("DrawColorRangeQ", "Range Q Color", ARGB(255, 173, 255, 47))
         Menu.Checkbox("DrawMeleeQ", "Draw Melee Q", true)
-        Menu.ColorPicker("DrawColorMeleeQ", "Melee Q Color", ARGB(255, 255, 255, 255)) 
-        Menu.Checkbox("DrawMeleeW", "Draw Melee W", true)
-        Menu.ColorPicker("DrawColorMeleeW", "Melee W Color", ARGB(255, 255, 255, 255))
+        Menu.ColorPicker("DrawColorMeleeQ", "Melee Q Color", ARGB(255, 173, 255, 47)) 
+        Menu.Checkbox("DrawMeleeW", "Draw Melee W", false)
+        Menu.ColorPicker("DrawColorMeleeW", "Melee W Color", ARGB(255, 173, 255, 47))
         Menu.Checkbox("DrawMeleeE", "Draw Melee E", true)
-        Menu.ColorPicker("DrawColorMeleeE", "Melee E Color", ARGB(255, 255, 255, 255)) 
+        Menu.ColorPicker("DrawColorMeleeE", "Melee E Color", ARGB(255, 173, 255, 47)) 
+    end)
     end)
 
-    Menu.Separator()
-
-    Menu.ColoredText("Script Information", ARGB(255, 255, 255, 255), true)
-
-    Menu.Separator()
-
-    Menu.ColoredText("Version: " .. VERSION, ARGB(255, 255, 255, 255))
-    Menu.ColoredText("Last Update: " .. LAST_UPDATE, ARGB(255, 255, 255, 255))
-
-    Menu.Separator()
+    Menu.Separator("Author: Shulepin")
 end)
 
 ----------------------------------------------------------------------------------------------
@@ -719,7 +709,7 @@ end
 local OnTick = function()
     local tick = os_clock()
     if TickCount < tick then
-        TickCount = tick + 0.1
+        TickCount = tick + 0.2
 
         UpdateSpellCD()
 
