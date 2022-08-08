@@ -69,9 +69,9 @@ local Q = Spell.Targeted({
 local W = Spell.Skillshot({
     ["Slot"] = _W,
     ["SlotString"] = "W",
-    ["Range"] = 800,
+    ["Range"] = 775,
     ["Delay"] = 0.25,
-    ["Radius"] = 100,
+    ["Radius"] = 120,
     ["Speed"] = math_huge,
     ["Type"] = "Linear",
 })
