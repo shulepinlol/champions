@@ -11,8 +11,8 @@ if Player.CharName ~= "Elise" then return end
 local Elise = {}
 local Script = {
     Name = "Shulepin" .. Player.CharName,
-    Version = "1.0.5",
-    LastUpdated = "03/01/2022",
+    Version = "1.0.6",
+    LastUpdated = "08/08/2022",
     Changelog = {
         [1] = "[24/12/2021 - Version 1.0.0]: Initial release",
         [2] = "[03/01/2022 - Version 1.0.1]: Improved JungleClear",
@@ -166,8 +166,8 @@ local InfoPanel = {
 function InfoPanel.CreateMenu()
     Menu.NewTree("ShulepinScript.InfoPanel", "Information Panel", function()
         Menu.Checkbox("ShulepinScript.InfoPanel.SpellFarmStatus", "Spell Farm Status", true)
-        Menu.Text("X - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.X", "", 100, 0, Resolution.x, 1)
-        Menu.Text("Y - "); Menu.SameLine(); Menu.Slider("ShulepinScript.InfoPanel.Y", "", 100, 0, Resolution.y, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.X", "X -", 100, 0, Resolution.x, 1)
+        Menu.Slider("ShulepinScript.InfoPanel.Y", "Y -", 100, 0, Resolution.y, 1)
     end)
     InfoPanel.MenuCreated = true
 end
@@ -376,8 +376,7 @@ end
 
 function Elise.CreateMenu()
     Menu.RegisterMenu("SElise", "Shulepin | Elise", function()
-        Menu.Text("Spell Settings", true)
-        Menu.Separator()
+        Menu.Separator("Spell Settings")
 
         Menu.NewTree("SElise.QH", "[Human] [Q] Neurotoxin", function()
             Menu.NewTree("SElise.QH.Combo", "Combo Settings", function()
@@ -385,12 +384,12 @@ function Elise.CreateMenu()
             end)
             Menu.NewTree("SElise.QH.Harass", "Harass Settings", function()
                 Menu.Checkbox("SElise.QH.Harass.Use", "Use [Human] [Q] Neurotoxin", true)
-                Menu.Text("Min. Mana [%%]  - "); Menu.SameLine(); Menu.Slider("SElise.QH.Harass.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SElise.QH.Harass.Mana", "Min. Mana [%]", 35, 0, 100, 1)
                 AddWhiteListMenu("SElise.QH.Harass.WhiteList.")
             end)
             Menu.NewTree("SElise.QH.Waveclear", "Wave Clear Settings", function()
                 Menu.Checkbox("SElise.QH.Waveclear.Use", "Use [Human] [Q] Neurotoxin", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SElise.QH.Waveclear.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SElise.QH.Waveclear.Mana", "Min. Mana [%]", 35, 0, 100, 1)
             end)
             Menu.NewTree("SElise.QH.Killsteal", "Kill Steal Settings", function()
                 Menu.Checkbox("SElise.QH.Killsteal.Use", "Use [Human] [Q] Neurotoxin", true)
@@ -399,7 +398,7 @@ function Elise.CreateMenu()
             Menu.NewTree("SElise.QH.Draw", "Draw Settings", function()
                 Menu.Checkbox("SElise.QH.Draw.Damage", "Draw [Human] [Q] Neurotoxin Damage", true)
                 Menu.Checkbox("SElise.QH.Draw.Use", "Draw [Human] [Q] Neurotoxin Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SElise.QH.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SElise.QH.Draw.Color", "Color", 0x9400D3)
             end)
         end)
 
@@ -409,12 +408,12 @@ function Elise.CreateMenu()
             end)
             Menu.NewTree("SElise.WH.Harass", "Harass Settings", function()
                 Menu.Checkbox("SElise.WH.Harass.Use", "Use [Human] [W] Volatile Spiderling", true)
-                Menu.Text("Min. Mana [%%]  - "); Menu.SameLine(); Menu.Slider("SElise.WH.Harass.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SElise.WH.Harass.Mana", "Min. Mana [%]", 35, 0, 100, 1)
                 AddWhiteListMenu("SElise.WH.Harass.WhiteList.")
             end)
             Menu.NewTree("SElise.WH.Waveclear", "Wave Clear Settings", function()
                 Menu.Checkbox("SElise.WH.Waveclear.Use", "Use [Human] [W] Volatile Spiderling", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SElise.WH.Waveclear.Mana", "", 35, 0, 100, 1)
+                Menu.Slider("SElise.WH.Waveclear.Mana", "Min. Mana [%]", 35, 0, 100, 1)
             end)
             Menu.NewTree("SElise.WH.Killsteal", "Kill Steal Settings", function()
                 Menu.Checkbox("SElise.WH.Killsteal.Use", "Use [Human] [W] Volatile Spiderling", true)
@@ -423,24 +422,24 @@ function Elise.CreateMenu()
             Menu.NewTree("SElise.WH.Draw", "Draw Settings", function()
                 Menu.Checkbox("SElise.WH.Draw.Damage", "Draw [Human] [W] Volatile Spiderling Damage", true)
                 Menu.Checkbox("SElise.WH.Draw.Use", "Draw [Human] [W] Volatile Spiderling Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SElise.WH.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SElise.WH.Draw.Color", "Color", 0x9370DB)
             end)
         end)
 
         Menu.NewTree("SElise.EH", "[Human] [E] Cocoon", function()
             Menu.NewTree("SElise.EH.Combo", "Combo Settings", function()
                 Menu.Checkbox("SElise.EH.Combo.Use", "Use [Human] [E] Cocoon", true)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SElise.EH.Combo.HitChance", "", 4, HitChanceList)
+                Menu.Dropdown("SElise.EH.Combo.HitChance", "Min. HitChance", 2, HitChanceList)
             end)
             Menu.NewTree("SElise.EH.Harass", "Harass Settings", function()
                 Menu.Checkbox("SElise.EH.Harass.Use", "Use [Human] [E] Cocoon", true)
-                Menu.Text("Min. Mana [%%]  - "); Menu.SameLine(); Menu.Slider("SElise.EH.Harass.Mana", "", 35, 0, 100, 1)
-                Menu.Text("Min. HitChance - "); Menu.SameLine(); Menu.Dropdown("SElise.EH.Harass.HitChance", "", 4, HitChanceList)
+                Menu.Slider("SElise.EH.Harass.Mana", "Min. Mana [%]", 35, 0, 100, 1)
+                Menu.Dropdown("SElise.EH.Harass.HitChance", "Min. HitChance", 2, HitChanceList)
                 AddWhiteListMenu("SElise.EH.Harass.WhiteList.")
             end)
             Menu.NewTree("SElise.EH.Waveclear", "Wave Clear Settings", function()
                 Menu.Checkbox("SElise.EH.Waveclear.Use", "Use [Human] [E] Cocoon", true)
-                Menu.Text("Min. Mana [%%]    - "); Menu.SameLine(); Menu.Slider("SElise.EH.Waveclear.Mana", "", 35, 0, 100, 1)
+                Menu.SameLine(); Menu.Slider("SElise.EH.Waveclear.Mana", "Min. Mana [%]", 35, 0, 100, 1)
             end)
             Menu.NewTree("SElise.EH.GapClose", "GapClose Settings", function()
                 Menu.Checkbox("SElise.EH.GapClose.Use", "Use [Human] [E] Cocoon", true)
@@ -453,7 +452,7 @@ function Elise.CreateMenu()
             Menu.NewTree("SElise.EH.Draw", "Draw Settings", function()
                 Menu.Checkbox("SElise.EH.Draw.Damage", "Draw [Human] [E] Cocoon Damage", true)
                 Menu.Checkbox("SElise.EH.Draw.Use", "Draw [Human] [E] Cocoon Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SElise.EH.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SElise.EH.Draw.Color", "Color", 0x9370DB)
             end)
         end)
 
@@ -471,7 +470,7 @@ function Elise.CreateMenu()
             Menu.NewTree("SElise.QS.Draw", "Draw Settings", function()
                 Menu.Checkbox("SElise.QS.Draw.Damage", "Draw [Spider] [Q] Venomous Bite Damage", true)
                 Menu.Checkbox("SElise.QS.Draw.Use", "Draw [Spider] [Q] Venomous Bite Range", true)
-                Menu.Text("Color - "); Menu.SameLine(); Menu.ColorPicker("SElise.QS.Draw.Color", "", 0xFFFFFFFF)
+                Menu.ColorPicker("SElise.QS.Draw.Color", "Color", 0x9370DB)
             end)
         end)
 
@@ -493,30 +492,9 @@ function Elise.CreateMenu()
             end)
         end)
 
-        Menu.Separator()
-        Menu.Text("Other Settings", true)
-        Menu.Separator()
-
+        Menu.Separator("Other Settings")
         InfoPanel.CreateMenu()
-
-        Menu.Separator()
-        Menu.Text("Script Changelog", true)
-        Menu.Separator()
-
-        for k, v in ipairs(Script.Changelog) do
-            Menu.ColoredText(v, 0x919191FF)
-        end
-
-        Menu.Separator()
-        Menu.Text("Script Information", true)
-        Menu.Separator()
-        Menu.Text("Version:") Menu.SameLine()
-        Menu.ColoredText(Script.Version, 0x919191FF, false)
-        Menu.Text("Last Updated:") Menu.SameLine()
-        Menu.ColoredText(Script.LastUpdated, 0x919191FF, false)
-        Menu.Text("Author:") Menu.SameLine()
-        Menu.ColoredText("Shulepin", 0x9400d3FF, false)
-        Menu.Separator()
+        Menu.Separator("Author: Shulepin")
     end)
 end
 
@@ -791,7 +769,7 @@ function Elise.OnGapclose(unit, dashData)
     if Elise.IsReady("EH", "GapClose") and Elise.Spells.EH:IsInRange(unit) then
         local whiteListValue = Menu.Get("SElise.EH.GapClose.WhiteList." .. unit.CharName, true)
         if whiteListValue and dashData.Slot > -1 then
-            return Elise.Spells.EH:CastOnHitChance(unit, HitChance.Medium)
+            return Elise.Spells.EH:CastOnHitChance(unit, HitChance.Low)
         end
     end
 end
@@ -801,7 +779,7 @@ function Elise.OnInterruptibleSpell(unit, spellCast, danger, endTime, canMoveDur
     if Elise.IsReady("EH", "Interrupt") and Elise.Spells.EH:IsInRange(unit) then
         local whiteListValue = Menu.Get("SElise.EH.Interrupt.WhiteList." .. unit.CharName, true)
         if whiteListValue and danger >= 3 then
-            return Elise.Spells.EH:CastOnHitChance(unit, HitChance.Medium)
+            return Elise.Spells.EH:CastOnHitChance(unit, HitChance.Low)
         end
     end
 end
