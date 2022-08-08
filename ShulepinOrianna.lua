@@ -2,7 +2,7 @@ if Player.CharName ~= "Orianna" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.6", "08/08/2022"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.8", "08/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -100,7 +100,7 @@ local LastCastT = {
 
 local BallObject = Player
 local DrawSpellTable = { Q, E }
-local TickCount = 0.2
+local TickCount = 0
 
 ---@type fun(a: number, r: number, g: number, b: number):number
 local ARGB = function(a, r, g, b)
@@ -140,7 +140,7 @@ end
 ---@type fun(slot: number, position: Vector|GameObject, condition: function|boolean):void
 local CastSpell = function(slot, position, condition)
     local tick = os_clock()
-    if LastCastT[slot] + 0.2 < tick then
+    if LastCastT[slot] + 0.1 < tick then
         if Input.Cast(slot, position) then
             LastCastT[slot] = tick
             if condition ~= nil then
