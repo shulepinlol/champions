@@ -2,7 +2,7 @@ if Player.CharName ~= "Irelia" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinIrelia", "1.0.4", "19/06/2021"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinIrelia", "1.0.5", "08/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -326,11 +326,7 @@ local HitChanceList = { "Collision", "OutOfRange", "VeryLow", "Low", "Medium", "
 Menu.RegisterMenu("SIrelia", "Shulepin Irelia", function()
     Menu.Checkbox("ScriptEnabled", "Script Enabled", true)
 
-    Menu.Separator()
-
-    Menu.ColoredText("Spell Settings", ARGB(255, 255, 255, 255), true)
-
-    Menu.Separator()
+    Menu.Separator("Spell Settings", true)
 
     Menu.NewTree("Q", "[Q] Bladesurge", function()
         Menu.NewTree("ComboQ", "Combo Options", function()
@@ -350,7 +346,7 @@ Menu.RegisterMenu("SIrelia", "Shulepin Irelia", function()
         end)
         Menu.NewTree("DrawingsQ", "Drawings", function()
             Menu.Checkbox("DrawQ", "Draw Range", true)
-            Menu.ColorPicker("DrawColorQ", "Color", ARGB(255, 255, 255, 255))
+            Menu.ColorPicker("DrawColorQ", "Color", ARGB(255, 255, 150, 255))
         end)
     end)
 
@@ -359,8 +355,8 @@ Menu.RegisterMenu("SIrelia", "Shulepin Irelia", function()
             Menu.Checkbox("ComboUseW", "Enabled", true)
         end)
         Menu.NewTree("DrawingsW", "Drawings", function()
-            Menu.Checkbox("DrawW", "Draw Range", true)
-            Menu.ColorPicker("DrawColorW", "Color", ARGB(255, 255, 255, 255))
+            Menu.Checkbox("DrawW", "Draw Range", false)
+            Menu.ColorPicker("DrawColorW", "Color", ARGB(255, 255, 0, 255))
         end)
     end)
 
@@ -370,7 +366,7 @@ Menu.RegisterMenu("SIrelia", "Shulepin Irelia", function()
         end)
         Menu.NewTree("DrawingsE", "Drawings", function()
             Menu.Checkbox("DrawE", "Draw Range", true)
-            Menu.ColorPicker("DrawColorE", "Color", ARGB(255, 255, 255, 255))
+            Menu.ColorPicker("DrawColorE", "Color", ARGB(255, 255, 0, 255))
         end)
     end)
 
@@ -384,20 +380,10 @@ Menu.RegisterMenu("SIrelia", "Shulepin Irelia", function()
         end)
         Menu.NewTree("DrawingsR", "Drawings", function()
             Menu.Checkbox("DrawR", "Draw Range", true)
-            Menu.ColorPicker("DrawColorR", "Color", ARGB(255, 255, 255, 255))
+            Menu.ColorPicker("DrawColorR", "Color", ARGB(255, 255, 0, 255))
         end)
     end)
-
-    Menu.Separator()
-
-    Menu.ColoredText("Script Information", ARGB(255, 255, 255, 255), true)
-
-    Menu.Separator()
-
-    Menu.ColoredText("Version: " .. VERSION, ARGB(255, 255, 255, 255))
-    Menu.ColoredText("Last Update: " .. LAST_UPDATE, ARGB(255, 255, 255, 255))
-
-    Menu.Separator()
+    Menu.Separator("Author: Shulepin")
 end)
 
 ----------------------------------------------------------------------------------------------
