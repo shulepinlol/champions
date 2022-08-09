@@ -2,7 +2,7 @@ if Player.CharName ~= "Syndra" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSyndra", "1.0.7", "08/08/2022"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSyndra", "1.0.8", "08/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module("ShulepinSyndra", package.seeall, log.setup)
 clean.module("ShulepinSyndra", clean.seeall, log.setup)
@@ -196,7 +196,7 @@ Menu.RegisterMenu("SSyndra", "Shulepin Syndra", function()
         Menu.Checkbox("ComboUseW", "Use W", true)
         Menu.Checkbox("ComboUseE", "Use E", true)
         Menu.Checkbox("ComboUseQE", "Use Q + E Long", true)
-        Menu.Checkbox("ComboUseWE", "Use W + E Long", true)
+        Menu.Checkbox("ComboUseWE", "Use W + E Long", false)
         Menu.Checkbox("ComboUseR", "Use R", true)
 
         Menu.NewTree("WhiteList", "R Cast White List", function()
@@ -257,7 +257,7 @@ Menu.RegisterMenu("SSyndra", "Shulepin Syndra", function()
         Menu.Separator("Prediction Options", true)
         Menu.Slider("HitChanceQ", "Q HitChance", 0.15, 0, 1, 0.01)
         Menu.Slider("HitChanceW", "W HitChance", 0.15, 0, 1, 0.01)
-        Menu.Slider("HitChanceQE", "QE HitChance", 0.15, 0, 1, 0.01)
+        Menu.Slider("HitChanceQE", "QE HitChance", 0.35, 0, 1, 0.01)
     end)
 
         Menu.NextColumn()
