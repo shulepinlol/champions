@@ -2,7 +2,7 @@ if Player.CharName ~= "Syndra" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSyndra", "1.0.8", "08/08/2022"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSyndra", "1.0.9", "12/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module("ShulepinSyndra", package.seeall, log.setup)
 clean.module("ShulepinSyndra", clean.seeall, log.setup)
@@ -53,7 +53,7 @@ local _R                = SpellSlots.R
 local Q = Spell.Skillshot({
     ["Slot"] = _Q,
     ["SlotString"] = "Q",
-    ["Speed"] = 1450,
+    ["Speed"] = math_huge,
     ["Range"] = 800,
     ["Delay"] = 0.65,
     ["Radius"] = 180,
@@ -111,7 +111,7 @@ local W = Spell.Skillshot({
 local E = Spell.Skillshot({
     ["Slot"] = _E,
     ["SlotString"] = "E",
-    ["Speed"] = 1600,
+    ["Speed"] = 2500,
     ["Range"] = 700,
     ["Delay"] = 0.25,
     ["Radius"] = 100,
@@ -345,23 +345,6 @@ local GetRealHealth = function(unit)
     return hp + shieldAP
 end
 
----@type fun(spell: table, target: GameObject):number
-local GetDamage = function(spell, target)
-    local slot = spell.Slot
-    local level = Player.AsHero:GetSpell(slot).Level
-    local totalAP = Player.TotalAP
-    if slot == _Q then
-        local rawDamage = 30 + 40 * level + 0.65 * totalAP
-        return DamageLib.CalculateMagicalDamage(Player, target, rawDamage)
-    end
-    if slot == _R then
-        local ammo = Player:GetSpell(_R).Ammo
-        local rawDamage = ammo * (50 + 45 * level + 0.2 * totalAP)
-        local totalDamage = rawDamage
-        return DamageLib.CalculateMagicalDamage(Player, target, totalDamage)
-    end
-end
-
 ---@type fun():table
 local GetBestOrbs = function()
     local tick = os_clock()
@@ -581,11 +564,9 @@ local LastHit = function()
         for i, minion in pairs(minions) do
             local minion = minion.AsAI
             if minion and minion.IsTargetable then
-                local hpPred = Q:GetHealthPred(minion)
-                local damage = GetDamage(Q, minion)
                 local predPos = minion:FastPrediction(Q.Delay)
                 local dist = predPos:Distance(Player.Position)
-                if dist < Q.Range and damage > hpPred then
+                if dist < Q.Range and Q:CanKillTarget(minion) then
                     points[#points + 1] = predPos
                 end
             end
@@ -743,7 +724,7 @@ local GetUltimateConditions = function(target)
     local condition = true
     if GetMenuValue("ConditionsQ") then
         if IsReady(Q, function()
-            local damage = GetDamage(Q, target)
+            local damage = Q:GetDamage(target)
             local health = GetRealHealth(target)
             local healthCondition = health - damage <= 0
             local timeCondition = os_clock() > LastActionT
@@ -765,7 +746,7 @@ local ExecuteUltimate = function()
         local heroes = ObjectManager.Get("enemy", "heroes")
         for k, hero in pairs(heroes) do
             if IsValidTarget(hero, R.Range) then
-                local damage = GetDamage(R, hero)
+                local damage = R:GetDamage(hero)
                 local health = GetRealHealth(hero)
                 local whiteList = GetMenuValue("WhiteList" .. hero.AsAI.CharName)
                 local conditions = GetUltimateConditions(hero)
@@ -847,7 +828,7 @@ local OnDraw = function()
         for k, hero in pairs(heroes) do
             local heroAI = hero.AsAI
             if hero.IsVisible and hero.IsOnScreen and not hero.IsDead then
-                local damage = GetDamage(R, hero)
+                local damage = R:GetDamage(hero)
                 local hpBarPos = heroAI.HealthBarScreenPos
                 local x = 106 / (heroAI.MaxHealth + heroAI.ShieldAll)
                 local position = (heroAI.Health + heroAI.ShieldAll) * x

@@ -4,7 +4,7 @@ end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSamira", "1.0.4", "19/06/2021"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinSamira", "1.0.5", "12/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -264,20 +264,6 @@ end
 ---@type fun(slot: string, mode: string, heroName: string):boolean
 local GetWhiteListValue = function(slot, mode, heroName)
     return GetMenuValue(mode .. slot .. "WhiteList" .. heroName)
-end
-
----@type fun(spell: table, target: GameObject):number
-local GetDamage = function(spell, target)
-    local tick = os_clock()
-    local slot = spell.Slot
-    local myLevel = Player.Level
-    local level = Player.AsHero:GetSpell(slot).Level
-    local flatAD = Player.FlatPhysicalDamageMod
-    if slot == _E then
-        local rawDamage = 40 + 10 * level + flatAD * 0.2
-        return DamageLib.CalculateMagicalDamage(Player, target, rawDamage)
-    end
-    return 0
 end
 
 ----------------------------------------------------------------------------------------------
@@ -726,11 +712,11 @@ local AutoMode = function()
         local heroes = ObjectManager.Get("enemy", "heroes")
         for k, hero in pairs(heroes) do
             local hero = hero.AsAI
-            local damage = GetDamage(E, hero)
-            local aaDamage = DamageLib.GetAutoAttackDamage(Player, hero, true)
-            local health = hero.Health + hero.ShieldAll
-            if hero and IsValidTarget(hero, E.Range) and damage + aaDamage >= health then
-                return E:Cast(hero)
+            if hero and IsValidTarget(hero, E.Range) then
+                local aaDamage = DamageLib.GetAutoAttackDamage(Player, hero, true)
+                if E:CanKillTarget(hero, nil, aaDamage) then
+                    return E:Cast(hero)
+                end
             end
         end
     end

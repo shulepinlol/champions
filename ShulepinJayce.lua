@@ -2,7 +2,7 @@ if Player.CharName ~= "Jayce" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinJayce", "1.0.5", "08/08/2022"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinJayce", "1.0.6", "12/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -351,28 +351,11 @@ end
 ---@type fun(spell: table, target: GameObject):number
 local GetDamage = function(spell, target)
     local slot = spell.Slot
-    local level = Player.AsHero:GetSpell(slot).Level
-    local flatAD = Player.AsHero.FlatPhysicalDamageMod
     if spell.Form == "Melee" then
-        if slot == _Q then
-            local rawDamage = ({55, 95, 135, 175, 215, 255})[level > 0 and level or 1] + 1.2 * flatAD
-            return DamageLib.CalculatePhysicalDamage(Player, target, rawDamage)
-        end
-        if slot == _E then
-            local maxHp = target.AsHero.MaxHealth
-            local rawDamage = (({8, 10.4, 12.8, 15.2, 17.6, 20})[level > 0 and level or 1] * 0.01) * maxHp + flatAD
-            return DamageLib.CalculatePhysicalDamage(Player, target, rawDamage)
-        end
-    else
-        if slot == _Q then
-            if spell.Enhanced then
-                local rawDamage = ({55, 110, 165, 220, 275, 330})[level > 0 and level or 1] + 1.2 * flatAD
-                return DamageLib.CalculatePhysicalDamage(Player, target, (rawDamage + (rawDamage * 0.4)))
-            else
-                local rawDamage = ({55, 110, 165, 220, 275, 330})[level > 0 and level or 1] + 1.2 * flatAD
-                return DamageLib.CalculatePhysicalDamage(Player, target, rawDamage)
-            end
-        end
+        if slot == _Q then return QM:GetDamage(target) end
+        if slot == _E then return EM:GetDamage(target) end
+    elseif slot == _Q then
+        return QR:GetDamage(target, spell.Enhanced and "Empowered" or "RangeForm")
     end
 end
 

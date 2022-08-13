@@ -11,8 +11,8 @@ if Player.CharName ~= "Poppy" then return end
 local Poppy = {}
 local Script = {
     Name = "Shulepin" .. Player.CharName,
-    Version = "1.0.5",
-    LastUpdated = "08/08/2022",
+    Version = "1.0.6",
+    LastUpdated = "12/08/2022",
     Changelog = {
         [1] = "[21/12/2021 - Version 1.0.0]: Initial release",
     }
@@ -260,7 +260,8 @@ function Poppy.CreateSpells()
         Width           = 160,
         Delay           = 0.25,
         Speed           = huge,
-        Type            = "Linear"
+        Type            = "Linear",
+        UseHitbox       = true
     })
 
     Poppy.Spells["W"] = Spell.Active({

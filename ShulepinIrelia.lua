@@ -2,7 +2,7 @@ if Player.CharName ~= "Irelia" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinIrelia", "1.0.6", "08/08/2022"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinIrelia", "1.0.7", "12/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -69,7 +69,7 @@ local Q = Spell.Targeted({
 local W = Spell.Skillshot({
     ["Slot"] = _W,
     ["SlotString"] = "W",
-    ["Range"] = 775,
+    ["Range"] = 825,
     ["Delay"] = 0.25,
     ["Radius"] = 120,
     ["Speed"] = math_huge,
@@ -81,9 +81,10 @@ local E = Spell.Skillshot({
     ["SlotString"] = "E",
     ["Range"] = 775,
     ["Delay"] = 0.25,
-    ["Radius"] = 70,
+    ["Radius"] = 90,
     ["Speed"] = 2000,
     ["Type"] = "Linear",
+    ["Collisions"] = {WindWall = true},
 })
 
 local R = Spell.Skillshot({
@@ -91,9 +92,10 @@ local R = Spell.Skillshot({
     ["SlotString"] = "R",
     ["Range"] = 1000,
     ["Delay"] = 0.4,
-    ["Radius"] = 105,
+    ["Radius"] = 160,
     ["Speed"] = 2000,
     ["Type"] = "Linear",
+    ["Collisions"] = {WindWall = true},
 })
 
 ----------------------------------------------------------------------------------------------

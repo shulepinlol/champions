@@ -2,7 +2,7 @@ if Player.CharName ~= "Orianna" then return end
 
 ----------------------------------------------------------------------------------------------
 
-local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.8", "08/08/2022"
+local SCRIPT_NAME, VERSION, LAST_UPDATE = "ShulepinOrianna", "1.0.9", "12/08/2022"
 _G.CoreEx.AutoUpdate("https://raw.githubusercontent.com/shulepinlol/champions/main/" .. SCRIPT_NAME .. ".lua", VERSION)
 module(SCRIPT_NAME, package.seeall, log.setup)
 clean.module(SCRIPT_NAME, clean.seeall, log.setup)
@@ -186,28 +186,6 @@ local GetWhiteListValue = function(slot, mode, heroName)
     return GetMenuValue(mode .. slot .. "WhiteList" .. heroName)
 end
 
----@type fun(spell: table, target: GameObject):number
-local GetDamage = function(spell, target)
-    local tick = os_clock()
-    local slot = spell.Slot
-    local myLevel = Player.Level
-    local level = Player.AsHero:GetSpell(slot).Level
-    local totalAP = Player.TotalAP
-    if slot == _Q then
-        local rawDamage = 30 + 30 * level + 0.5 * totalAP
-        return DamageLib.CalculateMagicalDamage(Player, target, rawDamage)
-    end
-    if slot == _W then
-        local rawDamage = 15 + 45 * level + 0.7 * totalAP
-        return DamageLib.CalculateMagicalDamage(Player, target, rawDamage)
-    end
-    if slot == _E then
-        local rawDamage = 30 + 30 * level + 0.3 * totalAP 
-        return DamageLib.CalculateMagicalDamage(Player, target, rawDamage)
-    end
-    return 0
-end
-
 local GetEnemiesInRange = function(range, from)
     local result = {}
     local heroes = ObjectManager.Get("enemy", "heroes")
@@ -227,8 +205,7 @@ local GetEnemyMinionsInRange = function(range, from, killable)
         local minion = minion.AsAI
         if minion and IsValidTarget(minion, range, from) then
             if killable then
-                local damage = GetDamage(W, minion)
-                if damage > minion.Health then
+                if W:GetDamage(minion) > minion.Health then
                     result[#result + 1] = minion
                 end
             else
@@ -263,8 +240,7 @@ local GetEnemyMinionsOnLine = function(range, killable)
             local isOnSegment, pointSegment, pointLine = minion.Position:ProjectOn(BallObject.Position, Player.Position)
             if isOnSegment and pointSegment:Distance(minion.Position) < 90 + minion.BoundingRadius / 2 then
                 if killable then
-                    local damage = GetDamage(E, minion)
-                    if damage > minion.Health then
+                    if E:GetDamage(minion) > minion.Health then
                         result[#result + 1] = minion
                     end
                 else
@@ -526,9 +502,7 @@ local LastHit = function()
             if minion and minion.IsTargetable then
                 local predPos = minion:FastPrediction(Q.Delay)
                 local dist = predPos:Distance(Player.Position)
-                local damage = GetDamage(Q, minion)
-                local hpPred = Q:GetHealthPred(minion)
-                if dist < Q.Range and damage > hpPred then
+                if dist < Q.Range and Q:CanKillTarget(minion) then
                     points[#points + 1] = predPos
                     if minion.AsMinion.IsSiegeMinion then
                         siegeMinion = minion

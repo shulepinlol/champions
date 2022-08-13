@@ -11,8 +11,8 @@ if Player.CharName ~= "Evelynn" then return end
 local Evelynn = {}
 local Script = {
     Name = "Shulepin" .. Player.CharName,
-    Version = "1.0.5",
-    LastUpdated = "08/08/2022",
+    Version = "1.0.6",
+    LastUpdated = "12/08/2022",
     Changelog = {
         [1] = "[21/12/2021 - Version 1.0.0]: Initial release",
     }
@@ -264,7 +264,7 @@ function Evelynn.CreateSpells()
     Evelynn.Spells["Q"] = Spell.Skillshot({
         Slot            = SpellSlots.Q,
         Range           = 800,
-        Width           = 60,
+        Radius          = 60,
         Delay           = 0.25,
         Speed           = 2400,
         Type            = "Linear",
@@ -279,7 +279,7 @@ function Evelynn.CreateSpells()
 
     Evelynn.Spells["R"] = Spell.Skillshot({
         Slot            = SpellSlots.R,
-        Range           = 500,
+        Range           = 450,
         ConeAngleRad    = 90 * pi / 180,
         Delay           = 0.35,
         Speed           = huge,
